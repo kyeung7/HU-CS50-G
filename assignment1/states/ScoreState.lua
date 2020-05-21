@@ -40,11 +40,11 @@ function ScoreState:render()
     love.graphics.printf('Score: ' .. tostring(self.score), 0, 100, VIRTUAL_WIDTH, 'center')
 
 -- ********************************************************************************************************** --
-	if ((self.score >= 0) and (self.score <= 1)) then
+	if ((self.score > 0) and (self.score <= 1)) then
 		love.graphics.draw(bronze, 290, 100, 0, 0.1, 0.1) end-- x, y, rotation, xscale, yscale
 	if ((self.score > 1) and (self.score <= 3)) then
 		love.graphics.draw(silver, 290, 100, 0, 0.1, 0.1) end-- x, y, rotation, xscale, yscale
-	if (self.score > 5) then
+	if (self.score > 3) then
 		love.graphics.draw(gold, 290, 100, 0, 0.1, 0.1) end-- x, y, rotation, xscale, yscale
 -- ********************************************************************************************************** --
 

@@ -14,7 +14,7 @@ PipePair = Class{}
 -- size of the gap between pipes
 -- local GAP_HEIGHT = 90
 math.randomseed(os.time()) -- needed to get random num list based on run time
-local GAP_HEIGHT = math.random(30, 200) -- modified so rand num in range 30 < y < 200
+local GAP_HEIGHT = math.random(96, 144) -- modified so rand num in range 96 < y < 144
 
 -- ****************************************************************************** --
 
@@ -33,6 +33,11 @@ function PipePair:init(y)
     self.y = y
 
     -- instantiate two pipes that belong to this pair
+	
+	-- *********************************************** --
+	GAP_HEIGHT =  math.random(96, 144) --pseudorandom gapheights
+	-- *********************************************** --
+
     self.pipes = {
         ['upper'] = Pipe('top', self.y),
         ['lower'] = Pipe('bottom', self.y + PIPE_HEIGHT + GAP_HEIGHT)

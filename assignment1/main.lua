@@ -62,6 +62,12 @@ local GROUND_SCROLL_SPEED = 60
 
 local BACKGROUND_LOOPING_POINT = 413
 
+-- ********************************* --
+local pause = love.graphics.newImage('pause.png')
+local pauseFlag = false
+
+-- ********************************* --
+
 function love.load()
     -- initialize our nearest-neighbor filter
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -128,6 +134,12 @@ function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
     end
+
+	-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --	
+	if key == 'p' then --flip flop boolean 
+		pauseFlag = not pauseFlag
+    end
+	-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --	
 end
 
 --[[
@@ -154,12 +166,13 @@ function love.mouse.wasPressed(button)
 end
 
 function love.update(dt)
-    -- scroll our background and ground, looping back to 0 after a certain amount
-    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
-    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
-
-    gStateMachine:update(dt)
-
+	if pauseFlag == false then
+		-- scroll our background and ground, looping back to 0 after a certain amount
+		backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+		groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+		gStateMachine:update(dt)
+	end
+	
     love.keyboard.keysPressed = {}
     love.mouse.buttonsPressed = {}
 end
@@ -167,9 +180,15 @@ end
 function love.draw()
     push:start()
     
-    love.graphics.draw(background, -backgroundScroll, 0)
+	love.graphics.draw(background, -backgroundScroll, 0)
     gStateMachine:render()
     love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
-    
+	
+	-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --	
+	if pauseFlag == true then
+		love.graphics.draw(pause, 220, 110, 0, 0.2, 0.2) -- x, y, rotation, xscale, yscale
+	end
+	
+	-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --	
     push:finish()
 end
